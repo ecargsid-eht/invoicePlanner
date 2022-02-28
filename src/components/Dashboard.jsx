@@ -23,20 +23,41 @@ import db from '../firebase-config';
 
 function Dashboard() {
   const [invoices, setInvoices] = useState([])
+  const [cus,setCus] = useState([])
   const colTxn = collection(db, "sales_invoice")
   const colParty = collection(db,"party")
+  const [newData , setNewData] = useState([])
   useEffect(() => {
     async function getTxn() {
 
       const invoice = await getDocs(colTxn)
-      invoice.docs.map((inv) => (
-        console.log(inv))
-        )
+      // invoice.docs.map((inv) => (
+      //   console.log(inv))
+      //   )
       setInvoices(invoice.docs.map((inv) => ({ ...inv.data(), id: inv.id })))
+  
+
     }
 
     getTxn();
-  }, [])
+  }, []);
+
+  useEffect(()=>{
+    getPartyDetails()
+  },[invoices])
+
+async function getPartyDetails(){
+  for(const item of invoices){
+    for(const i in item){
+      // console.log('of',i)
+      if(i=== "party"){
+        item[i] = (await getDoc(item[i])).data().party_name
+      }
+    }
+  }
+  setNewData(invoices);
+}  
+
 
   return (
     <>
@@ -92,7 +113,7 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {invoices.map((inv) => (
+                    {newData.map((inv) => (
                       <TableRow
                         key={inv.id}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -101,7 +122,9 @@ function Dashboard() {
                         {new Date(inv.invoice_date.seconds * 1000).toLocaleDateString("en-US")}
                         </TableCell>
                         <TableCell align="right">
-                          {console.log(getDoc(inv.party))}
+                          {/* {console.log(getDoc(inv.party))} */}
+                          {inv.party}
+                          
                         </TableCell>
                         <TableCell align="right">{inv.id}</TableCell>
                         <TableCell align="right">Rs. {inv.total}</TableCell>
