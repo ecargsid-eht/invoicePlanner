@@ -1,16 +1,17 @@
 import {initializeApp} from 'firebase/app'
 import {getFirestore} from 'firebase/firestore'
 
-
+console.log(typeof process.env.REACT_APP_API_KEY)
 const firebaseConfig = {
-  apiKey: "AIzaSyAgPKJglQSpFKwofd_nfRdc9O0Eu3DXXU8",
-  authDomain: "invoiceplanner.firebaseapp.com",
-  projectId: "invoiceplanner",
-  storageBucket: "invoiceplanner.appspot.com",
-  messagingSenderId: "19912291117",
-  appId: "1:19912291117:web:9f2eaa3bb0009337ccd9a4",
-  measurementId: "G-0KJG1T9610"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
+
 
 initializeApp(firebaseConfig)
 
